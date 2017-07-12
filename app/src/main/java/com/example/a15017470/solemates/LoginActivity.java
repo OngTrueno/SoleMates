@@ -127,7 +127,6 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } else {
                 progress.dismiss();
-                checkUserExist();
             }
         }
     }
