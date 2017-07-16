@@ -12,35 +12,39 @@
         android:id="@+id/imageButton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="#00ffff"
+        android:background="@android:color/transparent"
         android:src="@mipmap/add_btn"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"/>
 
     <EditText
+        android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:background="@drawable/input_outline"
         android:layout_below="@+id/imageButton"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:padding="15dp" />
+        android:layout_marginTop="20dp"
+        android:background="@drawable/input_outline"
+        android:padding="15dp"
+        android:text="Brand"
+        android:textColor="@android:color/darker_gray" />
 
     <EditText
+        android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:background="@drawable/input_outline"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:padding="15dp" />
+        android:layout_marginTop="20dp"
+        android:background="@drawable/input_outline"
+        android:ems="10"
+        android:padding="15dp"
+        android:text="Model"
+        android:textColor="@android:color/darker_gray" />
 
     <Button
         android:id="@+id/button"
