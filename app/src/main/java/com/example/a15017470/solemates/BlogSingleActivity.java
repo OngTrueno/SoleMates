@@ -1,5 +1,6 @@
 package com.example.a15017470.solemates;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,22 +42,22 @@ public class BlogSingleActivity extends AppCompatActivity {
 
         post_key = getIntent().getExtras().getString("blog_id");
 
-        blogSingleImage = (ImageView)findViewById(R.id.singleBlogImage);
-        blogSingleBrand = (TextView)findViewById(R.id.singlePostBrand);
-        blogSingleModel = (TextView)findViewById(R.id.singlePostModel);
-        blogSingleUser = (TextView)findViewById(R.id.singlePostUser);
-        blogSingleRemoveBtn = (Button)findViewById(R.id.singleRemoveBtn);
+        blogSingleImage = (ImageView) findViewById(R.id.singleBlogImage);
+        blogSingleBrand = (TextView) findViewById(R.id.singlePostBrand);
+        blogSingleModel = (TextView) findViewById(R.id.singlePostModel);
+        blogSingleUser = (TextView) findViewById(R.id.singlePostUser);
+        blogSingleRemoveBtn = (Button) findViewById(R.id.singleRemoveBtn);
 
         //Toast.makeText(BlogSingleActivity.this, post_key, Toast.LENGTH_SHORT).show();
 
         database.child(post_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String post_brand = (String)dataSnapshot.child("brand").getValue();
-                String post_model = (String)dataSnapshot.child("model").getValue();
-                String post_image = (String)dataSnapshot.child("image").getValue();
-                String post_user = (String)dataSnapshot.child("username").getValue();
-                String post_uid = (String)dataSnapshot.child("uid").getValue();
+                String post_brand = (String) dataSnapshot.child("brand").getValue();
+                String post_model = (String) dataSnapshot.child("model").getValue();
+                String post_image = (String) dataSnapshot.child("image").getValue();
+                String post_user = (String) dataSnapshot.child("username").getValue();
+                String post_uid = (String) dataSnapshot.child("uid").getValue();
 
                 blogSingleBrand.setText(post_brand);
                 blogSingleModel.setText(post_model);
@@ -64,7 +65,7 @@ public class BlogSingleActivity extends AppCompatActivity {
 
                 Picasso.with(BlogSingleActivity.this).load(post_image).into(blogSingleImage);
 
-                if(auth.getCurrentUser().getUid().equals(post_uid)){
+                if (auth.getCurrentUser().getUid().equals(post_uid)) {
                     blogSingleRemoveBtn.setVisibility(View.VISIBLE);
                 }
             }
@@ -72,6 +73,16 @@ public class BlogSingleActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        blogSingleRemoveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                database.child(post_key).removeValue();
+
+                Intent mainIntent = new Intent(BlogSingleActivity.this, MainActivity.class);
+                startActivity(mainIntent);
             }
         });
     }
