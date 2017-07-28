@@ -7,8 +7,8 @@
         android:title="Add Shoe"
         app:showAsAction="always" />
 
-    <item android:id="@+id/action_settings"
-        android:title="Settings"
+    <item android:id="@+id/action_myPosts"
+        android:title="My Posts"
         app:showAsAction="never" />
 
     <item android:id="@+id/action_logout"

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() == null){
+                if (firebaseAuth.getCurrentUser() == null) {
                     Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(loginIntent);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         database.keepSynced(true);
         databaseUsers.keepSynced(true);
 
-        blogList = (RecyclerView)findViewById(R.id.blog_list);
+        blogList = (RecyclerView) findViewById(R.id.blog_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
@@ -95,11 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 viewHolder.setImage(getApplicationContext(), model.getImage());
                 viewHolder.setUsername(model.getUsername());
                 viewHolder.setLikeBtn(post_key);
-                
+
                 viewHolder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        Toast.makeText(MainActivity.this, post_key, Toast.LENGTH_SHORT).show();
                         Intent singleBlogIntent = new Intent(MainActivity.this, BlogSingleActivity.class);
                         singleBlogIntent.putExtra("blog_id", post_key);
                         startActivity(singleBlogIntent);
@@ -111,35 +110,37 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         processLike = true;
 
-                            databaseLike.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if(processLike) {
-                                        if (dataSnapshot.child(post_key).hasChild(auth.getCurrentUser().getUid())) {
-                                            databaseLike.child(post_key).child(auth.getCurrentUser().getUid()).removeValue();
-                                            processLike = false;
-                                        } else {
-                                            databaseLike.child(post_key).child(auth.getCurrentUser().getUid()).setValue("RandomValue");
-                                            processLike = false;
-                                        }
+                        databaseLike.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (processLike) {
+                                    if (dataSnapshot.child(post_key).hasChild(auth.getCurrentUser().getUid())) {
+                                        databaseLike.child(post_key).child(auth.getCurrentUser().getUid()).removeValue();
+                                        processLike = false;
+                                    } else {
+                                        databaseLike.child(post_key).child(auth.getCurrentUser().getUid()).setValue("RandomValue");
+                                        processLike = false;
                                     }
                                 }
+                            }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                            }
+                        });
                     }
                 });
             }
         };
-
         blogList.setAdapter(firebaseRecyclerAdapter);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager.setReverseLayout(true);
+        blogList.setLayoutManager(mLayoutManager);
     }
 
     private void checkUserExist() {
-        if(auth.getCurrentUser() != null) {
+        if (auth.getCurrentUser() != null) {
             final String user_id = auth.getCurrentUser().getUid();
             databaseUsers.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             super(itemView);
             view = itemView;
 
-            likeBtn = (ImageButton)view.findViewById(R.id.like_btn);
+            likeBtn = (ImageButton) view.findViewById(R.id.like_btn);
 
             databaseLike = FirebaseDatabase.getInstance().getReference().child("Likes");
             auth = FirebaseAuth.getInstance();
@@ -179,11 +180,11 @@ public class MainActivity extends AppCompatActivity {
             databaseLike.keepSynced(true);
         }
 
-        public void setLikeBtn(final String post_key){
+        public void setLikeBtn(final String post_key) {
             databaseLike.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.child(post_key).hasChild(auth.getCurrentUser().getUid())){
+                    if (dataSnapshot.child(post_key).hasChild(auth.getCurrentUser().getUid())) {
                         likeBtn.setImageResource(R.mipmap.ic_thumb_up_red_24dp);
                     } else {
                         likeBtn.setImageResource(R.mipmap.ic_thumb_up_gray_24dp);
@@ -197,24 +198,24 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        public void setBrand(String brand){
-            TextView post_brand = (TextView)view.findViewById(R.id.singlePostBrand);
+        public void setBrand(String brand) {
+            TextView post_brand = (TextView) view.findViewById(R.id.singlePostBrand);
             post_brand.setText(brand);
         }
 
-        public void setModel(String model){
-            TextView post_model = (TextView)view.findViewById(R.id.post_model);
+        public void setModel(String model) {
+            TextView post_model = (TextView) view.findViewById(R.id.post_model);
             post_model.setText(model);
         }
 
-        public void setUsername(String username){
-            TextView post_username = (TextView)view.findViewById(R.id.post_username);
+        public void setUsername(String username) {
+            TextView post_username = (TextView) view.findViewById(R.id.post_username);
             post_username.setText("Posted by: " + username);
         }
 
-        public void setImage(final Context ctx, final String image){
-            final ImageView post_image = (ImageView)view.findViewById(R.id.post_image);
-             Picasso.with(ctx).load(image).into(post_image);
+        public void setImage(final Context ctx, final String image) {
+            final ImageView post_image = (ImageView) view.findViewById(R.id.post_image);
+            Picasso.with(ctx).load(image).into(post_image);
 
             Picasso.with(ctx).load(image).networkPolicy(NetworkPolicy.OFFLINE).into(post_image, new Callback() {
                 @Override
@@ -238,17 +239,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(item.getItemId() == R.id.action_add){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
             startActivity(new Intent(MainActivity.this, PostActivity.class));
         }
 
-        if(item.getItemId() == R.id.action_logout){
+        if (item.getItemId() == R.id.action_logout) {
             logout();
         }
 
-        if(item.getItemId() == R.id.action_myPosts){
-            startActivity(new Intent(MainActivity.this, PostActivity.class));
+        if (item.getItemId() == R.id.action_myPosts) {
+            startActivity(new Intent(MainActivity.this, MyPostsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

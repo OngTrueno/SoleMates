@@ -32,7 +32,6 @@ public class MyPostsActivity extends AppCompatActivity {
     DatabaseReference database;
     DatabaseReference databaseUsers;
     DatabaseReference databaseLike;
-    DatabaseReference databaseCurrentUser;
     FirebaseAuth auth;
     FirebaseAuth.AuthStateListener authListener;
     Query queryCurrentUser;
@@ -44,6 +43,8 @@ public class MyPostsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("My Posts");
 
         auth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -143,6 +144,9 @@ public class MyPostsActivity extends AppCompatActivity {
         };
 
         blogList.setAdapter(firebaseRecyclerAdapter);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager.setReverseLayout(true);
+        blogList.setLayoutManager(mLayoutManager);
     }
 
     private void checkUserExist() {
@@ -256,6 +260,12 @@ public class MyPostsActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.action_myPosts) {
             startActivity(new Intent(MyPostsActivity.this, PostActivity.class));
+        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

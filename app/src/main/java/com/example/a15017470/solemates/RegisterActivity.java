@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,15 +35,18 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Register an account");
+
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference().child("Users");
         progress = new ProgressDialog(this);
 
-        nameField = (EditText)findViewById(R.id.nameField);
-        emailField = (EditText)findViewById(R.id.emailField);
-        passwordField = (EditText)findViewById(R.id.passwordField);
-        registerBtn = (Button)findViewById(R.id.registerBtn);
-        
+        nameField = (EditText) findViewById(R.id.nameField);
+        emailField = (EditText) findViewById(R.id.emailField);
+        passwordField = (EditText) findViewById(R.id.passwordField);
+        registerBtn = (Button) findViewById(R.id.registerBtn);
+
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
 
-        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
 
             progress.setMessage("Registering...");
             progress.show();
@@ -63,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         String user_id = auth.getCurrentUser().getUid();
                         DatabaseReference current_user_db = database.child(user_id);
                         current_user_db.child("name").setValue(name);
@@ -73,9 +78,22 @@ public class RegisterActivity extends AppCompatActivity {
                         Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(mainIntent);
+                    } else {
+                        progress.dismiss();
+                        Toast.makeText(RegisterActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

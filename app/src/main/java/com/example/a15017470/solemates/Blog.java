@@ -9,14 +9,17 @@ public class Blog {
     private String model;
     private String image;
 
-    public Blog(){
+    private String username;
+
+    public Blog() {
 
     }
 
-    public Blog(String brand, String model, String image) {
+    public Blog(String brand, String model, String image, String username) {
         this.brand = brand;
         this.model = model;
         this.image = image;
+        this.username = username;
     }
 
     public String getBrand() {
@@ -41,5 +44,13 @@ public class Blog {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
