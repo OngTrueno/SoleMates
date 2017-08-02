@@ -48,8 +48,6 @@ public class BlogSingleActivity extends AppCompatActivity {
         blogSingleUser = (TextView) findViewById(R.id.singlePostUser);
         blogSingleRemoveBtn = (Button) findViewById(R.id.singleRemoveBtn);
 
-        //Toast.makeText(BlogSingleActivity.this, post_key, Toast.LENGTH_SHORT).show();
-
         database.child(post_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

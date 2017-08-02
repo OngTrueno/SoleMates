@@ -83,12 +83,14 @@ public class PostActivity extends AppCompatActivity {
 
     private void startPosting() {
         progress.setMessage("Posting to blog...");
-        progress.show();
 
         final String brand = editText.getText().toString().trim();
         final String model = editText2.getText().toString().trim();
 
         if (!TextUtils.isEmpty(brand) && !TextUtils.isEmpty(model) && imageUri != null) {
+
+            progress.show();
+
             StorageReference filepath = storage.child("Blog_Images").child(imageUri.getLastPathSegment());
             filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -103,7 +105,6 @@ public class PostActivity extends AppCompatActivity {
                             newPost.child("model").setValue(model);
                             newPost.child("image").setValue(downloadUrl.toString());
                             newPost.child("uid").setValue(currentUser.getUid());
-
 
                             newPost.child("username").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

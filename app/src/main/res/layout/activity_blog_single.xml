@@ -53,6 +53,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/singlePostUser"
+        android:background="@color/cardview_shadow_start_color"
+        android:id="@+id/view" />
+
     <Button
         android:id="@+id/singleRemoveBtn"
         android:layout_width="match_parent"
@@ -62,4 +72,13 @@
         android:layout_alignParentStart="true"
         android:text="REMOVE POST"
         android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/view"
+        android:layout_alignStart="@+id/view"
+        android:layout_below="@+id/view"
+        app:srcCompat="@mipmap/ic_thumb_up_gray_24dp" />
 </RelativeLayout>

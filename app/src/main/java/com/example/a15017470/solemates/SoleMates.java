@@ -17,6 +17,7 @@ public class SoleMates extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //To make sure the Database call is only run when Firebase is properly configured
         if (!FirebaseApp.getApps(this).isEmpty()) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         }
